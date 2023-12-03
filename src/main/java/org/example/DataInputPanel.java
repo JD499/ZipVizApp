@@ -6,11 +6,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class DataInputPanel extends JPanel {
     private JTextField zipCodeField;
     private JButton submitButton;
@@ -28,10 +23,20 @@ public class DataInputPanel extends JPanel {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Use fake data to create a chart
-                DemographicData fakeData = new DemographicData(100000, 50000); // Example population and median income
-                JFreeChart chart = ChartFactory.createChart(fakeData);
-                demographicChartPanel.setChart(chart);
+                new Thread(() -> {
+                    try {
+                        DataFetcher dataFetcher = new DataFetcher();
+                        DemographicData data = dataFetcher.fetchData(zipCodeField.getText());
+
+                        JFreeChart chart = ChartFactory.createChart(data);
+                        SwingUtilities.invokeLater(() -> demographicChartPanel.setChart(chart));
+                    } catch (Exception ex) {
+                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(DataInputPanel.this,
+                                "Error fetching data: " + ex.getMessage(),
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE));
+                    }
+                }).start();
             }
         });
 

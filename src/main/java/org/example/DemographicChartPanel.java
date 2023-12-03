@@ -15,8 +15,8 @@ public class DemographicChartPanel extends JPanel {
     private ChartPanel chartPanel;
 
     public DemographicChartPanel() {
-        // Initially, you might want to display an empty chart or some default view
-        JFreeChart initialChart = org.example.ChartFactory.createEmptyChart(); // This method should return a JFreeChart with no data
+
+        JFreeChart initialChart = org.example.ChartFactory.createEmptyChart();
         chartPanel = new ChartPanel(initialChart);
         add(chartPanel);
     }

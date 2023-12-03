@@ -27,22 +27,23 @@ public class ChartFactory {
 
 
     public static JFreeChart createChart(DemographicData data) {
-        // Create a dataset
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        // Assuming DemographicData has methods getCount() and getValue()
-        dataset.addValue(data.getPopulation(), "Series1", "Category" + data.getMedianIncome());
+        // Iterate through the incomeDistribution map to add data to the dataset
+        data.getIncomeDistribution().forEach((incomeRange, count) -> {
+            dataset.addValue(count, "Households", incomeRange);
+        });
 
         // Create a bar chart
         JFreeChart chart = org.jfree.chart.ChartFactory.createBarChart(
-                "Demographic Chart", // Chart title
-                "Category",          // Domain axis label
-                "Value",             // Range axis label
-                dataset,             // Data
+                "Income Distribution", // Chart title
+                "Income Range",        // Domain axis label
+                "Number of Households",// Range axis label
+                dataset,               // Data
                 PlotOrientation.VERTICAL,
-                true,                // Include legend
-                true,                // Tooltips
-                false                // URLs
+                true,                  // Include legend
+                true,                  // Tooltips
+                false                  // URLs
         );
 
         return chart;

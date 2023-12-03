@@ -14,6 +14,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     // https://mvnrepository.com/artifact/org.jfree/jfreechart
     implementation("org.jfree:jfreechart:1.5.4")
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
 
 }
 
