@@ -1,15 +1,11 @@
 package org.example;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel; // Aliasing for clarity
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
-import javax.swing.JPanel;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+
 import javax.swing.JPanel;
+import java.awt.*;
 
 public class DemographicChartPanel extends JPanel {
     private ChartPanel chartPanel;

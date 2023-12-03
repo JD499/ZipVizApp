@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 public class DataInputPanel extends JPanel {
     private JTextField zipCodeField;
     private JButton submitButton;
+    private JComboBox<String> chartTypeComboBox;
     private DemographicChartPanel demographicChartPanel;
 
     public DataInputPanel(DemographicChartPanel demographicChartPanel) {
@@ -20,6 +21,10 @@ public class DataInputPanel extends JPanel {
         zipCodeField = new JTextField(10);
         submitButton = new JButton("Submit");
 
+        // Combo box for selecting chart type
+        chartTypeComboBox = new JComboBox<>(new String[]{"Bar Chart", "Lorenz Curve"});
+        add(chartTypeComboBox);
+
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -28,8 +33,14 @@ public class DataInputPanel extends JPanel {
                         DataFetcher dataFetcher = new DataFetcher();
                         DemographicData data = dataFetcher.fetchData(zipCodeField.getText());
 
-                        //JFreeChart chart = ChartFactory.createChart(data);
-                        JFreeChart chart = ChartFactory.createLorenzChart(data);
+                        JFreeChart chart;
+                        String selectedChartType = (String) chartTypeComboBox.getSelectedItem();
+                        if ("Bar Chart".equals(selectedChartType)) {
+                            chart = ChartFactory.createChart(data);
+                        } else { // "Lorenz Curve"
+                            chart = ChartFactory.createLorenzChart(data);
+                        }
+
                         SwingUtilities.invokeLater(() -> demographicChartPanel.setChart(chart));
                     } catch (Exception ex) {
                         SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(DataInputPanel.this,
