@@ -28,7 +28,8 @@ public class DataInputPanel extends JPanel {
                         DataFetcher dataFetcher = new DataFetcher();
                         DemographicData data = dataFetcher.fetchData(zipCodeField.getText());
 
-                        JFreeChart chart = ChartFactory.createChart(data);
+                        //JFreeChart chart = ChartFactory.createChart(data);
+                        JFreeChart chart = ChartFactory.createLorenzChart(data);
                         SwingUtilities.invokeLater(() -> demographicChartPanel.setChart(chart));
                     } catch (Exception ex) {
                         SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(DataInputPanel.this,
