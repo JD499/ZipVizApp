@@ -1,34 +1,22 @@
 package org.example;
 
+import java.util.Map;
+
 public class DemographicData {
-    private int population;
-    private double medianIncome;
-    // ... other demographic fields
+    private Map<String, Integer> incomeDistribution;
 
     // Constructor
-    public DemographicData(int population, double medianIncome /*, other parameters */) {
-        this.population = population;
-        this.medianIncome = medianIncome;
-        // ... initialize other fields
+    public DemographicData(Map<String, Integer> incomeDistribution) {
+        this.incomeDistribution = incomeDistribution;
     }
 
-    // Getters and Setters
-    public int getPopulation() {
-        return population;
+    // Getter and Setter for incomeDistribution
+    public Map<String, Integer> getIncomeDistribution() {
+        return incomeDistribution;
     }
 
-    public void setPopulation(int population) {
-        this.population = population;
+    public void setIncomeDistribution(Map<String, Integer> incomeDistribution) {
+        this.incomeDistribution = incomeDistribution;
     }
-
-    public double getMedianIncome() {
-        return medianIncome;
-    }
-
-    public void setMedianIncome(double medianIncome) {
-        this.medianIncome = medianIncome;
-    }
-
-    // ... other getters and setters
 }
 
