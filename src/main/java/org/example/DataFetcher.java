@@ -2,7 +2,6 @@ package org.example;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-
 import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
@@ -13,6 +12,17 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DataFetcher {
+    private static DataFetcher instance;
+
+    private DataFetcher() {}
+
+    public static synchronized DataFetcher getInstance() {
+        if (instance == null) {
+            instance = new DataFetcher();
+        }
+        return instance;
+    }
+
     public DemographicData fetchData(String zipCode) throws Exception {
         String apiKey = "8977b93cfc95c370f7992f833db12a96bb8a18f9";
         String baseUrl = "https://api.census.gov/data/2021/acs/acs5";
@@ -32,15 +42,12 @@ public class DataFetcher {
             conn.disconnect();
         }
 
-
         Gson gson = new Gson();
         JsonArray jsonArray = JsonParser.parseString(response.toString()).getAsJsonArray();
 
         JsonArray data = jsonArray.get(1).getAsJsonArray();
 
-
         Map<String, Integer> incomeData = new LinkedHashMap<>();
-
 
         incomeData.put("Less than $10,000", gson.fromJson(data.get(4), Integer.class));
         incomeData.put("$10,000 to $14,999", gson.fromJson(data.get(8), Integer.class));
@@ -58,7 +65,6 @@ public class DataFetcher {
         incomeData.put("$125,000 to $149,999", gson.fromJson(data.get(56), Integer.class));
         incomeData.put("$150,000 to $199,999", gson.fromJson(data.get(60), Integer.class));
         incomeData.put("$200,000 or more", gson.fromJson(data.get(64), Integer.class));
-
 
         // Return the demographic data
         return new DemographicData(incomeData);
