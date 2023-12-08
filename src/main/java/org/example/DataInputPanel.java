@@ -30,7 +30,7 @@ public class DataInputPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 new Thread(() -> {
                     try {
-                        DataFetcher dataFetcher = new DataFetcher();
+                        DataFetcher dataFetcher = DataFetcher.getInstance();
                         DemographicData data = dataFetcher.fetchData(zipCodeField.getText());
 
                         JFreeChart chart;
