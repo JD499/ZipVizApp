@@ -23,7 +23,7 @@ public class DataInputPanel extends JPanel {
         submitButton = new JButton("Submit");
 
         // Combo box for selecting chart type
-        chartTypeComboBox = new JComboBox<>(new String[]{"Bar Chart", "Lorenz Curve"});
+        chartTypeComboBox = new JComboBox<>(new String[]{"Bar Chart", "Lorenz Curve", "Pie Chart", "Line Chart"});
         add(chartTypeComboBox);
 
         submitButton.addActionListener(new ActionListener() {
@@ -35,10 +35,19 @@ public class DataInputPanel extends JPanel {
                         DemographicData data = dataFetcher.fetchData(zipCodeField.getText());
 
                         String selectedChartType = (String) chartTypeComboBox.getSelectedItem();
-                        if ("Bar Chart".equals(selectedChartType)) {
-                            chartFactory = new BarChartFactory();
-                        } else { // "Lorenz Curve"
-                            chartFactory = new LorenzChartFactory();
+                        switch (selectedChartType) {
+                            case "Bar Chart":
+                                chartFactory = new BarChartFactory();
+                                break;
+                            case "Lorenz Curve":
+                                chartFactory = new LorenzChartFactory();
+                                break;
+                            case "Pie Chart":
+                                chartFactory = new PieChartFactory();
+                                break;
+                            case "Line Chart":
+                                chartFactory = new LineChartFactory();
+                                break;
                         }
 
                         JFreeChart chart = chartFactory.createChart(data);
