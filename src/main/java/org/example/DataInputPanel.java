@@ -10,6 +10,9 @@ public class DataInputPanel extends JPanel {
   private JTextField zipCodeField;
   private JComboBox<String> chartTypeComboBox;
 
+  /**
+   * The DataInputPanel class represents a panel for entering data input. It extends the JPanel class.
+   */
   public DataInputPanel() {
     setupUI();
   }

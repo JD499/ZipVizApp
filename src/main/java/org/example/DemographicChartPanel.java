@@ -9,6 +9,9 @@ public class DemographicChartPanel extends JPanel {
   private JFreeChart currentChart;
   private DemographicData currentData;
 
+  /**
+   * The DemographicChartPanel class represents a JPanel that displays a chart representing demographic data.
+   */
   public DemographicChartPanel() {
     ChartFactoryProvider chartFactoryProvider = new ChartFactoryProvider();
     JFreeChart initialChart = chartFactoryProvider.getInitialChartFactory().createChart(null);
