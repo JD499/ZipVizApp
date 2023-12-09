@@ -4,18 +4,18 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
 import javax.swing.JPanel;
-import java.awt.*;
+
 
 public class DemographicChartPanel extends JPanel {
     private ChartPanel chartPanel;
     private JFreeChart currentChart;
     private DemographicData currentData;
-    private ChartFactory chartFactory;
+    private ChartFactoryProvider chartFactoryProvider;
 
     public DemographicChartPanel() {
-        chartFactory = new InitialChartFactory();
+        chartFactoryProvider = new ChartFactoryProvider();
         DemographicData data = null;
-        JFreeChart initialChart = chartFactory.createChart(data);
+        JFreeChart initialChart = chartFactoryProvider.getInitialChartFactory().createChart(data);
         chartPanel = new ChartPanel(initialChart);
         add(chartPanel);
     }
