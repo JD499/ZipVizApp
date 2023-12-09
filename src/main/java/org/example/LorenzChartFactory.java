@@ -1,44 +1,19 @@
 package org.example;
 
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.ui.RectangleInsets;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.DefaultXYDataset;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public interface ChartFactory {
-
-    public static JFreeChart createEmptyChart() {
-        // Create a dataset
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-        // Create an empty chart
-        JFreeChart chart = org.jfree.chart.ChartFactory.createBarChart(
-                "No Data Available", // Chart title
-                "",                  // Domain axis label
-                "",                  // Range axis label
-                dataset,             // Data
-                PlotOrientation.VERTICAL,
-                false,               // Include legend
-                true,                // Tooltips
-                false                // URLs
-        );
-
-        return chart;
-    }
-
-
-    JFreeChart createChart(DemographicData data);
-
-    public static JFreeChart createLorenzChart(DemographicData data) {
+// LorenzChartFactory.java
+public class LorenzChartFactory implements ChartFactory {
+    @Override
+    public JFreeChart createChart(DemographicData data) {
         DefaultXYDataset dataset = new DefaultXYDataset();
 
         double[][] lorenzCurveData = calculateLorenzData(data);
@@ -65,36 +40,35 @@ public interface ChartFactory {
         return chart;
     }
 
-
     private static double[][] calculateLorenzData(DemographicData data) {
-    Map<String, Integer> incomeDistribution = data.getIncomeDistribution();
+        Map<String, Integer> incomeDistribution = data.getIncomeDistribution();
 
-    int totalHouseholds = incomeDistribution.values().stream().mapToInt(Integer::intValue).sum();
-    double totalIncome = incomeDistribution.entrySet().stream()
-            .mapToDouble(entry -> calculateMidpoint(entry.getKey()) * entry.getValue())
-            .sum();
+        int totalHouseholds = incomeDistribution.values().stream().mapToInt(Integer::intValue).sum();
+        double totalIncome = incomeDistribution.entrySet().stream()
+                .mapToDouble(entry -> calculateMidpoint(entry.getKey()) * entry.getValue())
+                .sum();
 
-    double cumulativeHouseholds = 0;
-    double cumulativeIncome = 0;
-    List<Double> cumulativeHouseholdsPercentages = new ArrayList<>();
-    List<Double> cumulativeIncomePercentages = new ArrayList<>();
+        double cumulativeHouseholds = 0;
+        double cumulativeIncome = 0;
+        List<Double> cumulativeHouseholdsPercentages = new ArrayList<>();
+        List<Double> cumulativeIncomePercentages = new ArrayList<>();
 
-    for (Map.Entry<String, Integer> entry : incomeDistribution.entrySet()) {
-        cumulativeHouseholds += entry.getValue();
-        cumulativeIncome += calculateMidpoint(entry.getKey()) * entry.getValue();
+        for (Map.Entry<String, Integer> entry : incomeDistribution.entrySet()) {
+            cumulativeHouseholds += entry.getValue();
+            cumulativeIncome += calculateMidpoint(entry.getKey()) * entry.getValue();
 
-        cumulativeHouseholdsPercentages.add((cumulativeHouseholds / (double) totalHouseholds) * 100);
-        cumulativeIncomePercentages.add((cumulativeIncome / totalIncome) * 100);
+            cumulativeHouseholdsPercentages.add((cumulativeHouseholds / (double) totalHouseholds) * 100);
+            cumulativeIncomePercentages.add((cumulativeIncome / totalIncome) * 100);
+        }
+
+        double[][] lorenzData = new double[2][cumulativeHouseholdsPercentages.size()];
+        for (int i = 0; i < cumulativeHouseholdsPercentages.size(); i++) {
+            lorenzData[0][i] = cumulativeHouseholdsPercentages.get(i);
+            lorenzData[1][i] = cumulativeIncomePercentages.get(i);
+        }
+
+        return lorenzData;
     }
-
-    double[][] lorenzData = new double[2][cumulativeHouseholdsPercentages.size()];
-    for (int i = 0; i < cumulativeHouseholdsPercentages.size(); i++) {
-        lorenzData[0][i] = cumulativeHouseholdsPercentages.get(i);
-        lorenzData[1][i] = cumulativeIncomePercentages.get(i);
-    }
-
-    return lorenzData;
-}
 
     private static double calculateMidpoint(String incomeRange) {
         return switch (incomeRange) {
@@ -117,8 +91,4 @@ public interface ChartFactory {
             default -> 0;
         };
     }
-
-
-
-
 }

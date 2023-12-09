@@ -11,6 +11,7 @@ public class DataInputPanel extends JPanel {
     private JButton submitButton;
     private JComboBox<String> chartTypeComboBox;
     private DemographicChartPanel demographicChartPanel;
+    private ChartFactory chartFactory;
 
     public DataInputPanel(DemographicChartPanel demographicChartPanel) {
         this.demographicChartPanel = demographicChartPanel;
@@ -33,13 +34,14 @@ public class DataInputPanel extends JPanel {
                         DataFetcher dataFetcher = DataFetcher.getInstance();
                         DemographicData data = dataFetcher.fetchData(zipCodeField.getText());
 
-                        JFreeChart chart;
                         String selectedChartType = (String) chartTypeComboBox.getSelectedItem();
                         if ("Bar Chart".equals(selectedChartType)) {
-                            chart = ChartFactory.createChart(data);
+                            chartFactory = new BarChartFactory();
                         } else { // "Lorenz Curve"
-                            chart = ChartFactory.createLorenzChart(data);
+                            chartFactory = new LorenzChartFactory();
                         }
+
+                        JFreeChart chart = chartFactory.createChart(data);
 
                         SwingUtilities.invokeLater(() -> demographicChartPanel.setChart(chart));
                     } catch (Exception ex) {
