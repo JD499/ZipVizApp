@@ -15,7 +15,6 @@ public class DataInputPanel extends JPanel {
     private JTextField zipCodeField;
     private JComboBox<String> chartTypeComboBox;
     private final DemographicChartPanel demographicChartPanel;
-    private ChartFactory chartFactory;
     private final ChartFactoryProvider chartFactoryProvider;
 
     public DataInputPanel(DemographicChartPanel demographicChartPanel) {
@@ -53,13 +52,15 @@ public class DataInputPanel extends JPanel {
     private void fetchDataAndCreateChart() {
         DataFetcher dataFetcher = DataFetcher.getInstance();
         DemographicData data = dataFetcher.fetchData(zipCodeField.getText());
+        JFreeChart chart;
 
         String selectedChartType = (String) chartTypeComboBox.getSelectedItem();
         if (selectedChartType != null) {
-            chartFactory = chartFactoryProvider.getChartFactory(selectedChartType);
+            chart = chartFactoryProvider.getChartFactory(selectedChartType).createChart(data);
+        } else {
+            chart = null;
         }
 
-        JFreeChart chart = chartFactory.createChart(data);
 
         SwingUtilities.invokeLater(() -> demographicChartPanel.setChart(chart, data));
     }
