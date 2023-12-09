@@ -3,11 +3,11 @@ package org.example;
 import javax.swing.JFrame;
 import java.awt.*;
 
-public class MainFrame extends JFrame {
-    public MainFrame() {
+public class ApplicationWindow extends JFrame {
+    public ApplicationWindow() {
         initializeComponents();
         setTitle("ZipViz - Demographic Data Visualizer");
-        setSize(800, 600); // Set your desired size
+        setSize(1366, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

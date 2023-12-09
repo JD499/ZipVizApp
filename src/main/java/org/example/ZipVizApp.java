@@ -10,7 +10,7 @@ public class ZipVizApp {
     }
 
     private static void createAndShowGUI() {
-        MainFrame mainFrame = new MainFrame();
-        mainFrame.setVisible(true);
+        ApplicationWindow applicationWindow = new ApplicationWindow();
+        applicationWindow.setVisible(true);
     }
 }
