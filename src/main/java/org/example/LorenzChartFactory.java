@@ -1,45 +1,25 @@
 package org.example;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-// LorenzChartFactory.java
 public class LorenzChartFactory implements ChartFactory {
-    @Override
-    public JFreeChart createChart(DemographicData data) {
-        DefaultXYDataset dataset = new DefaultXYDataset();
-
-        double[][] lorenzCurveData = calculateLorenzData(data);
-        dataset.addSeries("Lorenz Curve", lorenzCurveData);
-
-        double[][] equalityLine = {{0, 100}, {0, 100}};
-        dataset.addSeries("Line of Equality", equalityLine);
-
-        JFreeChart chart = org.jfree.chart.ChartFactory.createXYLineChart(
-                "Lorenz Curve",
-                "Cumulative Share of Households (%)",
-                "Cumulative Share of Income (%)",
-                dataset,
-                PlotOrientation.VERTICAL,
-                true,   // legend
-                true,   // tooltips
-                false   // URLs
-        );
-
-        XYPlot plot = chart.getXYPlot();
-        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-        plot.setRenderer(renderer);
-
-        return chart;
-    }
-
+    /**
+     * Calculates the Lorenz data for a given DemographicData object.
+     * The method takes the income distribution from the DemographicData object and calculates the cumulative
+     * households and cumulative income percentages for each income range. The calculated data is returned as
+     * a 2D array containing two rows:
+     * Row 1: Cumulative share of households percentages
+     * Row 2: Cumulative share of income percentages
+     *
+     * @param data The DemographicData object containing the income distribution data.
+     * @return A 2D array containing the calculated lorenz data.
+     */
     private static double[][] calculateLorenzData(DemographicData data) {
         Map<String, Integer> incomeDistribution = data.getIncomeDistribution();
 
@@ -47,12 +27,10 @@ public class LorenzChartFactory implements ChartFactory {
         double totalIncome = incomeDistribution.entrySet().stream()
                 .mapToDouble(entry -> calculateMidpoint(entry.getKey()) * entry.getValue())
                 .sum();
-
         double cumulativeHouseholds = 0;
         double cumulativeIncome = 0;
         List<Double> cumulativeHouseholdsPercentages = new ArrayList<>();
         List<Double> cumulativeIncomePercentages = new ArrayList<>();
-
         for (Map.Entry<String, Integer> entry : incomeDistribution.entrySet()) {
             cumulativeHouseholds += entry.getValue();
             cumulativeIncome += calculateMidpoint(entry.getKey()) * entry.getValue();
@@ -60,7 +38,6 @@ public class LorenzChartFactory implements ChartFactory {
             cumulativeHouseholdsPercentages.add((cumulativeHouseholds / (double) totalHouseholds) * 100);
             cumulativeIncomePercentages.add((cumulativeIncome / totalIncome) * 100);
         }
-
         double[][] lorenzData = new double[2][cumulativeHouseholdsPercentages.size()];
         for (int i = 0; i < cumulativeHouseholdsPercentages.size(); i++) {
             lorenzData[0][i] = cumulativeHouseholdsPercentages.get(i);
@@ -70,6 +47,12 @@ public class LorenzChartFactory implements ChartFactory {
         return lorenzData;
     }
 
+    /**
+     * Calculates the midpoint for a given income range.
+     *
+     * @param incomeRange The income range to calculate the midpoint for.
+     * @return The midpoint value for the given income range.
+     */
     private static double calculateMidpoint(String incomeRange) {
         return switch (incomeRange) {
             case "Less than $10,000" -> 5000;
@@ -90,5 +73,34 @@ public class LorenzChartFactory implements ChartFactory {
             case "$200,000 or more" -> 250000;
             default -> 0;
         };
+    }
+
+    /**
+     * Creates a JFreeChart object based on the provided DemographicData.
+     *
+     * @param data The DemographicData object containing the income distribution data.
+     * @return A JFreeChart object representing the chart with the income distribution data.
+     */
+    @Override
+    public JFreeChart createChart(DemographicData data) {
+        DefaultXYDataset dataset = new DefaultXYDataset();
+        double[][] lorenzCurveData = calculateLorenzData(data);
+        dataset.addSeries("Lorenz Curve", lorenzCurveData);
+        double[][] equalityLine = {{0, 100}, {0, 100}};
+        dataset.addSeries("Line of Equality", equalityLine);
+        JFreeChart chart = org.jfree.chart.ChartFactory.createXYLineChart(
+                "Lorenz Curve",
+                "Cumulative Share of Households (%)",
+                "Cumulative Share of Income (%)",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,   // legend
+                true,   // tooltips
+                false   // URLs
+        );
+        XYPlot plot = chart.getXYPlot();
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        plot.setRenderer(renderer);
+        return chart;
     }
 }
