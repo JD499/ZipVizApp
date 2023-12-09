@@ -15,17 +15,24 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DataFetcher {
-    private static final String API_KEY = System.getenv("CENSUS_API_KEY");
+    private static final String ENV_API_KEY = System.getenv("CENSUS_API_KEY");
     private static final String BASE_URL = "https://api.census.gov/data/2021/acs/acs5";
     private static DataFetcher instance;
+    private static String apiKey = ENV_API_KEY;
+
+
+
 
     /**
-     * The DataFetcher class is responsible for fetching demographic data from an API based on a given ZIP code.
+     * The DataFetcher class is responsible for fetching demographic data for a given ZIP code from an API.
      */
     private DataFetcher() {
-        if (API_KEY == null || API_KEY.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Environment variable CENSUS_API_KEY is not set.", "Error", JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
+        if (apiKey == null || apiKey.isEmpty()) {
+            apiKey = JOptionPane.showInputDialog(null, "Please enter your CENSUS_API_KEY", "API Key Required", JOptionPane.QUESTION_MESSAGE);
+            if (apiKey == null || apiKey.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Environment variable CENSUS_API_KEY is not set.", "Error", JOptionPane.ERROR_MESSAGE);
+                System.exit(1);
+            }
         }
     }
 
@@ -52,7 +59,7 @@ public class DataFetcher {
      */
     private static StringBuilder request(String zipCode) throws IOException {
         String query =
-                "?get=group(B19001)&for=zip%20code%20tabulation%20area:" + zipCode + "&key=" + API_KEY;
+                "?get=group(B19001)&for=zip%20code%20tabulation%20area:" + zipCode + "&key=" + apiKey;
         URL url = new URL(BASE_URL + query);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
