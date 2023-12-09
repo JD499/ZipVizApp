@@ -16,8 +16,8 @@ public class VisualizationPanel extends JPanel {
         add(demographicChartPanel);
     }
 
-    public void displayChart(JFreeChart chart) {
-        demographicChartPanel.setChart(chart);
+    public void displayChart(JFreeChart chart, DemographicData data) {
+        demographicChartPanel.setChart(chart, data);
         demographicChartPanel.revalidate();
     }
 }
