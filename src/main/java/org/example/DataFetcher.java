@@ -17,6 +17,9 @@ public class DataFetcher {
   private static final String BASE_URL = "https://api.census.gov/data/2021/acs/acs5";
   private static DataFetcher instance;
 
+  /**
+   * The DataFetcher class is responsible for fetching demographic data from an API based on a given ZIP code.
+   */
   private DataFetcher() {}
 
   /**
