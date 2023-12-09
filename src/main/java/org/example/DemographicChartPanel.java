@@ -10,9 +10,12 @@ public class DemographicChartPanel extends JPanel {
     private ChartPanel chartPanel;
     private JFreeChart currentChart;
     private DemographicData currentData;
+    private ChartFactory chartFactory;
 
     public DemographicChartPanel() {
-        JFreeChart initialChart = org.example.ChartFactory.createEmptyChart();
+        chartFactory = new InitialChartFactory();
+        DemographicData data = null;
+        JFreeChart initialChart = chartFactory.createChart(data);
         chartPanel = new ChartPanel(initialChart);
         add(chartPanel);
     }
