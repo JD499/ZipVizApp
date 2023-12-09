@@ -39,7 +39,7 @@ The application is structured into several classes and interfaces:
 
 ## Setup
 
-The application is built with Gradle. To run the application, use the `gradle run` command. To build a distributable version of the application, use the `gradle build` command.
+Run ZipVizApp.java to start the application.
 
 ## Note
 
