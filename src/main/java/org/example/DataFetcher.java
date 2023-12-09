@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,7 +22,12 @@ public class DataFetcher {
     /**
      * The DataFetcher class is responsible for fetching demographic data from an API based on a given ZIP code.
      */
-    private DataFetcher() {}
+    private DataFetcher() {
+        if (API_KEY == null || API_KEY.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Environment variable CENSUS_API_KEY is not set.", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
+    }
 
     /**
      * Retrieves the instance of the DataFetcher class. If the instance is null, a new instance will
