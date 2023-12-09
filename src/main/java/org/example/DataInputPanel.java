@@ -21,7 +21,6 @@ public class DataInputPanel extends JPanel {
         this.demographicChartPanel = demographicChartPanel;
         setupUI();
     }
-
     private void setupUI() {
         zipCodeField = new JTextField(10);
         JButton submitButton = new JButton("Submit");
@@ -32,30 +31,7 @@ public class DataInputPanel extends JPanel {
 
         submitButton.addActionListener(e -> new Thread(() -> {
             try {
-                DataFetcher dataFetcher = DataFetcher.getInstance();
-                DemographicData data = dataFetcher.fetchData(zipCodeField.getText());
-
-                String selectedChartType = (String) chartTypeComboBox.getSelectedItem();
-                if (selectedChartType != null) {
-                    switch (selectedChartType) {
-                        case "Bar Chart":
-                            chartFactory = new BarChartFactory();
-                            break;
-                        case "Lorenz Curve":
-                            chartFactory = new LorenzChartFactory();
-                            break;
-                        case "Pie Chart":
-                            chartFactory = new PieChartFactory();
-                            break;
-                        case "Line Chart":
-                            chartFactory = new LineChartFactory();
-                            break;
-                    }
-                }
-
-                JFreeChart chart = chartFactory.createChart(data);
-
-                SwingUtilities.invokeLater(() -> demographicChartPanel.setChart(chart, data));
+                fetchDataAndCreateChart();
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(DataInputPanel.this,
                         "Error fetching data: " + ex.getMessage(),
@@ -70,6 +46,33 @@ public class DataInputPanel extends JPanel {
         add(zipCodeField);
         add(submitButton);
         add(exportButton);
+    }
+
+    private void fetchDataAndCreateChart() {
+        DataFetcher dataFetcher = DataFetcher.getInstance();
+        DemographicData data = dataFetcher.fetchData(zipCodeField.getText());
+
+        String selectedChartType = (String) chartTypeComboBox.getSelectedItem();
+        if (selectedChartType != null) {
+            switch (selectedChartType) {
+                case "Bar Chart":
+                    chartFactory = new BarChartFactory();
+                    break;
+                case "Lorenz Curve":
+                    chartFactory = new LorenzChartFactory();
+                    break;
+                case "Pie Chart":
+                    chartFactory = new PieChartFactory();
+                    break;
+                case "Line Chart":
+                    chartFactory = new LineChartFactory();
+                    break;
+            }
+        }
+
+        JFreeChart chart = chartFactory.createChart(data);
+
+        SwingUtilities.invokeLater(() -> demographicChartPanel.setChart(chart, data));
     }
 
     private JButton createExportButton() {
