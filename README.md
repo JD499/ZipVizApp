@@ -43,4 +43,7 @@ The application is built with Gradle. To run the application, use the `gradle ru
 
 ## Note
 
-This application uses the U.S. Census Bureau's API to fetch demographic data. The API key used in this application is for demonstration purposes only. Please replace it with your own API key for production use.
+This application uses the U.S. Census Bureau's API to fetch demographic data. The API key is now stored as an environment variable. To set the API key use:
+
+```bash
+CENSUS_API_KEY=your_api_key;
