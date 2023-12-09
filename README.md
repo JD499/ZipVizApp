@@ -32,10 +32,11 @@ The application is structured into several classes and interfaces:
 
 ## Technologies Used
 
-- Java
-- JFreeChart for creating charts
-- Gson for parsing JSON data
-- Swing for creating the GUI
+- Java: JDK 11
+- [JFreeChart: 1.5.4](https://mvnrepository.com/artifact/org.jfree/jfreechart/1.5.4)
+- [Gson: 2.10.1](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1)
+- Gradle: 7.3.1
+- Swing: Included in JDK 11
 
 ## Setup
 
