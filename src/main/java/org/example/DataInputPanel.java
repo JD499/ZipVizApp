@@ -7,8 +7,11 @@ import java.util.Map;
 import javax.swing.*;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataInputPanel extends JPanel {
+    private static final Logger LOGGER = Logger.getLogger(DataInputPanel.class.getName());
     private JTextField zipCodeField;
     private JComboBox<String> chartTypeComboBox;
     private final DemographicChartPanel demographicChartPanel;
@@ -92,7 +95,7 @@ public class DataInputPanel extends JPanel {
                     try {
                         ChartUtils.saveChartAsPNG(pngFile, chart, 600, 400);
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }
             } else if (response == 1) {
@@ -104,7 +107,7 @@ public class DataInputPanel extends JPanel {
                     try {
                         saveDataAsCSV(file, data);
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }
             }
@@ -129,7 +132,7 @@ public class DataInputPanel extends JPanel {
                 writer.println("\"" + entry.getKey() + "\"," + entry.getValue());
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 }
