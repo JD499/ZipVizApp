@@ -14,7 +14,7 @@ public class PieChartFactory implements ChartFactory {
   @Override
   public JFreeChart createChart(DemographicData data) {
     DefaultPieDataset dataset = new DefaultPieDataset();
-    data.getIncomeDistribution().forEach(dataset::setValue);
+    data.incomeDistribution().forEach(dataset::setValue);
     return org.jfree.chart.ChartFactory.createPieChart(
         "Income Distribution", // Chart title
         dataset, // Data

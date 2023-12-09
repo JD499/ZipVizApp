@@ -14,7 +14,7 @@ public class LineChartFactory implements ChartFactory {
   @Override
   public JFreeChart createChart(DemographicData data) {
     DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-    data.getIncomeDistribution()
+    data.incomeDistribution()
         .forEach((incomeRange, count) -> dataset.addValue(count, "Households", incomeRange));
     return org.jfree.chart.ChartFactory.createLineChart(
         "Income Distribution", // Chart title

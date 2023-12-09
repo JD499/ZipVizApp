@@ -2,12 +2,26 @@ package org.example;
 
 public interface DataInputObserver {
 
-        void zipCodeSubmit(String zipCode);
+  /**
+   * Observes the user's zip code input.
+   *
+   * @param zipCode the zip code entered by the user
+   */
+  void zipCodeSubmit(String zipCode);
 
-        void comboBoxSelectSubmit(String selectedChartType);
-        void submitButtonPressed();
+  /**
+   * Observes the user's combo box selection.
+   *
+   * @param selectedChartType the selected chart type from the combo box
+   */
+  void comboBoxSelectSubmit(String selectedChartType);
 
-        void exportAsImage();
-        void exportAsCSV();
+  /** Observes the user's submit button. */
+  void submitButtonPressed();
 
+  /** Observes the user's export button as an image. */
+  void exportAsImage();
+
+  /** Observes the user's export button as a CSV file. */
+  void exportAsCSV();
 }

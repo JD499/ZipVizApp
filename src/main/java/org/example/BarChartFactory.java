@@ -1,4 +1,5 @@
 package org.example;
+
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -13,7 +14,7 @@ public class BarChartFactory implements ChartFactory {
   @Override
   public JFreeChart createChart(DemographicData data) {
     DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-    data.getIncomeDistribution()
+    data.incomeDistribution()
         .forEach((incomeRange, count) -> dataset.addValue(count, "Households", incomeRange));
     return org.jfree.chart.ChartFactory.createBarChart(
         "Income Distribution", // Chart title
