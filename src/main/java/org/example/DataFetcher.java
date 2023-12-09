@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DataFetcher {
-  private static final String API_KEY = "8977b93cfc95c370f7992f833db12a96bb8a18f9";
+  private static final String API_KEY = System.getenv("CENSUS_API_KEY");
   private static final String BASE_URL = "https://api.census.gov/data/2021/acs/acs5";
   private static DataFetcher instance;
 
