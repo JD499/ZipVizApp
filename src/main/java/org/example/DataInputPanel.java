@@ -16,9 +16,11 @@ public class DataInputPanel extends JPanel {
     private JComboBox<String> chartTypeComboBox;
     private final DemographicChartPanel demographicChartPanel;
     private ChartFactory chartFactory;
+    private final ChartFactoryProvider chartFactoryProvider;
 
     public DataInputPanel(DemographicChartPanel demographicChartPanel) {
         this.demographicChartPanel = demographicChartPanel;
+        this.chartFactoryProvider = new ChartFactoryProvider();
         setupUI();
     }
     private void setupUI() {
@@ -54,20 +56,7 @@ public class DataInputPanel extends JPanel {
 
         String selectedChartType = (String) chartTypeComboBox.getSelectedItem();
         if (selectedChartType != null) {
-            switch (selectedChartType) {
-                case "Bar Chart":
-                    chartFactory = new BarChartFactory();
-                    break;
-                case "Lorenz Curve":
-                    chartFactory = new LorenzChartFactory();
-                    break;
-                case "Pie Chart":
-                    chartFactory = new PieChartFactory();
-                    break;
-                case "Line Chart":
-                    chartFactory = new LineChartFactory();
-                    break;
-            }
+            chartFactory = chartFactoryProvider.getChartFactory(selectedChartType);
         }
 
         JFreeChart chart = chartFactory.createChart(data);
